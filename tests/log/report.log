@@ -1,0 +1,124 @@
+
+***********************************************
+### TEST: Dispositivo loop99p1
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** lsblk /dev/loop99p1
+
+**SALIDA:** loop99p1 259:4    0 487.3M  0 part 
+
+**CÓDIGO SALIDA:** 0
+
+**PUNTUACIÓN:** 1
+***********************************************
+### TEST: Dispositivo loop99p2
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** lsblk /dev/loop99p2
+
+**SALIDA:** loop99p2 259:5    0  511M  0 part 
+
+**CÓDIGO SALIDA:** 0
+
+**PUNTUACIÓN:** 1
+***********************************************
+### TEST: SA ext4 /dev/loop99p1
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** blkid /dev/loop99p1
+
+**SALIDA:** /dev/loop99p1: UUID="e4297cea-aa95-468c-bdfc-98f2b7779312" TYPE="ext4" PARTUUID="cb61d7a8-01"
+
+**CÓDIGO SALIDA:** 0
+
+**PUNTUACIÓN:** 1
+***********************************************
+### TEST: SA ntfs /dev/loop99p2
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** blkid /dev/loop99p2
+
+**SALIDA:** /dev/loop99p2: UUID="4E32F74D654B6C1F" TYPE="ntfs" PTTYPE="dos" PARTUUID="cb61d7a8-02"
+
+**CÓDIGO SALIDA:** 0
+
+**PUNTUACIÓN:** 1
+***********************************************
+### TEST: Punto montaje /mnt/gatos
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** mount -l | grep /dev/loop99p1
+
+**SALIDA:** 
+
+**CÓDIGO SALIDA:** 1
+
+**ERROR!** 
+***********************************************
+### TEST: Punto montaje /mnt/perros
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** mount -l | grep /dev/loop99p2
+
+**SALIDA:** 
+
+**CÓDIGO SALIDA:** 1
+
+**ERROR!** 
+***********************************************
+### TEST: Punto montaje /mnt/gatos en fstab
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** cat /etc/fstab | grep /dev/loop99p1
+
+**SALIDA:** 
+
+**CÓDIGO SALIDA:** 1
+
+**ERROR!** 
+***********************************************
+### TEST: Punto montaje /mnt/perros en fstab
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** cat /etc/fstab | grep /dev/loop99p2
+
+**SALIDA:** 
+
+**CÓDIGO SALIDA:** 1
+
+**ERROR!** 
+***********************************************
+### TEST: Particion /dev/loop100p1 clonada
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** test_loop_clone.sh 1
+
+**SALIDA:** ok
+
+**CÓDIGO SALIDA:** 0
+
+**PUNTUACIÓN:** 1
+***********************************************
+### TEST: Particion /dev/loop100p2 clonada
+
+**CONTAINER:** sa_crear_sa_1
+
+**COMANDO:** test_loop_clone.sh 2
+
+**SALIDA:** ok
+
+**CÓDIGO SALIDA:** 0
+
+**PUNTUACIÓN:** 1
+
+### NOTA DE LA TAREA: 6.0
+

@@ -1,0 +1,26 @@
+---
+# vars file for roles/sa_gestion
+#Comandos de test a ejecutar
+tests:
+ - container: ""
+   comandos:
+   - nombre: Ejercicio1
+     comando: test.sh ejercicio1
+     resultado: "204K"
+     puntuacion: 2
+   - nombre: Ejercicio2
+     comando: test.sh ejercicio2
+     resultado: "271kB"
+     puntuacion: 2
+   - nombre: Ejercicio3
+     comando: test.sh ejercicio3
+     resultado: "332K"
+     puntuacion: 2
+   - nombre: Ejercicio4
+     comando: test.sh ejercicio4
+     resultado: "1260K"
+     puntuacion: 2
+   - nombre: Ejercicio5
+     comando: test.sh ejercicio5
+     resultado: "10"
+     puntuacion: 2
