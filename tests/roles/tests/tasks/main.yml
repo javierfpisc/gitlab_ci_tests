@@ -4,7 +4,7 @@
     block:
     - name: EJECUTAR COMANDOS
       vars:
-       comando: "{{ item.1.comando }} | grep {{ item.1.resultado }}"
+       comando: "docker exec {{ item.0.container }} {{ item.1.comando }} | grep {{ item.1.resultado }}"
       shell: "{{ comando }}"
       register: TESTRESULT
       changed_when:
@@ -19,7 +19,6 @@
     rescue:
      - debug: msg="LO SIENTO!. No has superado todos los test"
        register: TESTERROR
-    no_log: False
 
   - name: CALCULAR NOTA
     set_fact:
@@ -30,33 +29,22 @@
     when: item.failed == false
 
   - name: MOSTRAR NOTA
-    debug: msg="{{ NOTA }}"
-    no_log: False
+    debug: msg="NOTA DE LA TAREA. {{ NOTA }}"
   
   - name: ESCRIBIR LOG
     shell: |
-     cat >> {{ REPORT }} << END     
-     ***********************************************
-     ### TEST: {{ item.item.1.nombre }}
-
-     **CONTAINER:** {{ item.item.0.container }}
-
-     **COMANDO:** {{ item.item.1.comando }}
-
-     **SALIDA:** {{ item.stdout }}
-
-     **CÓDIGO SALIDA:** {{ item.rc }}
-
-     END
+     echo "### TEST: {{ item.item.1.nombre }}" >> "{{ REPORT }}"
+     echo "**CONTAINER:** {{ item.item.0.container }}" >> "{{ REPORT }}"
+     echo "**COMANDO:** {{ item.item.1.comando }}" >> "{{ REPORT }}"
+     echo "**SALIDA:** {{ item.stdout }}" >> "{{ REPORT }}"
+     echo "**CÓDIGO SALIDA:** {{ item.rc }}" >> "{{ REPORT }}"
      if [ "{{ item.rc }}" -gt 0 ];then echo "**ERROR!** {{ item.stderr }}" >> "{{ REPORT }}";fi
-     if [ "{{ item.rc }}" -eq 0 ]; then echo "**PUNTUACIÓN:** {{ item.item.1.puntuacion }}" >> "{{ REPORT }}";fi
+     if [ "{{ item.rc }}" -eq 0 ]; then echo "**OK, PUNTUACIÓN:** {{ item.item.1.puntuacion }}" >> "{{ REPORT }}";fi
     loop: "{{ TESTRESULT.results }}"
     ignore_errors: yes
+    no_log: True
 
   - name: ESCRIBIR NOTA LOG
     shell: |
-     tee -a {{ REPORT }} << END
+     echo "### NOTA DE LA TAREA: {{ NOTA }}" >> "{{ REPORT }}"
 
-     ### NOTA DE LA TAREA: {{ NOTA }}
-
-     END
